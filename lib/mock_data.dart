@@ -45,3 +45,13 @@ final status = [
   'pending',
   'in-progress',
 ];
+
+final chips = [
+  'Documents',
+  'Glass',
+  'Liquid',
+  'Food',
+  'Electronic',
+  'Product',
+  'Others'
+];

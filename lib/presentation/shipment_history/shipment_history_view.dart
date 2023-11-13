@@ -22,7 +22,6 @@ class ShipmentHistoryView extends StatelessWidget {
             'Shipment history',
             style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                   color: Theme.of(context).colorScheme.onPrimary,
-                  fontWeight: FontWeight.bold,
                 ),
           ),
           bottom: TabBar(
@@ -71,6 +70,23 @@ class ShipmentHistoryView extends StatelessWidget {
 
 class _Body extends StatelessWidget {
   const _Body();
+
+  @override
+  Widget build(BuildContext context) {
+    return const TabBarView(
+      children: [
+        _TabViewItem(),
+        _TabViewItem(),
+        _TabViewItem(),
+        _TabViewItem(),
+        _TabViewItem(),
+      ],
+    );
+  }
+}
+
+class _TabViewItem extends StatelessWidget {
+  const _TabViewItem();
 
   @override
   Widget build(BuildContext context) {

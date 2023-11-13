@@ -9,4 +9,5 @@ class AppColors {
   static const statusInProgressColor = Colors.green;
   static const statusPendingColor = Colors.orange;
   static const statusLoadingColor = Colors.blue;
+  static const tertiaryColor = Color(0xFF141f2c);
 }
