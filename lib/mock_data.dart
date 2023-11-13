@@ -13,17 +13,17 @@ class Freight {
 final freights = [
   Freight(
     name: 'Ocean freight',
-    iconPath: Asset.forklift,
+    iconPath: Asset.ship,
     description: 'International',
   ),
   Freight(
     name: 'Cargo freight',
-    iconPath: Asset.forklift,
+    iconPath: Asset.truck,
     description: 'Reliable',
   ),
   Freight(
     name: 'Air freight',
-    iconPath: Asset.forklift,
+    iconPath: Asset.plane,
     description: 'International',
   ),
 ];

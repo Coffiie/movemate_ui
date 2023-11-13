@@ -1,7 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:movemate_ui/presentation/calculate/calculate_view.dart';
 import 'package:movemate_ui/presentation/core/theme/app_colors.dart';
 import 'package:movemate_ui/presentation/home/home_view.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 void main() {
   runApp(const MyApp());
@@ -51,7 +54,82 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: const HomeView(),
+      builder: (context, child) {
+        PersistentTabController controller =
+            PersistentTabController(initialIndex: 0);
+
+        return HeroControllerScope.none(
+          child: PersistentTabView(
+            context,
+            controller: controller,
+            screens: _buildScreens(),
+            items: _navBarsItems(context),
+            confineInSafeArea: true,
+            backgroundColor: Theme.of(context)
+                .colorScheme
+                .onPrimary, // Default is Colors.white.
+            handleAndroidBackButtonPress: true, // Default is true.
+            resizeToAvoidBottomInset:
+                true, // This needs to be true if you want to move up the screen when keyboard appears. Default is true.
+            stateManagement: true, // Default is true.
+            hideNavigationBarWhenKeyboardShows:
+                true, // Recommended to set 'resizeToAvoidBottomInset' as true while using this argument. Default is true.
+            popAllScreensOnTapOfSelectedTab: true,
+            popActionScreens: PopActionScreensType.all,
+            itemAnimationProperties: const ItemAnimationProperties(
+              // Navigation Bar's items animation properties.
+              duration: Duration(milliseconds: 200),
+              curve: Curves.ease,
+            ),
+            // screenTransitionAnimation: const ScreenTransitionAnimation(
+            //   // Screen transition animation on change of selected tab.
+            //   animateTabTransition: true,
+            //   curve: Curves.ease,
+            //   duration: Duration(milliseconds: 200),
+            // ),
+            navBarStyle: NavBarStyle
+                .style3, // Choose the nav bar style with this property.
+          ),
+        );
+      },
     );
+  }
+
+  List<Widget> _buildScreens() {
+    return [
+      const HomeView(),
+      const CalculateView(),
+      const CalculateView(),
+      const CalculateView(),
+    ];
+  }
+
+  List<PersistentBottomNavBarItem> _navBarsItems(BuildContext context) {
+    return [
+      PersistentBottomNavBarItem(
+        icon: const Icon(Icons.home),
+        title: ('Home'),
+        activeColorPrimary: Theme.of(context).colorScheme.primary,
+        inactiveColorPrimary: Colors.grey,
+      ),
+      PersistentBottomNavBarItem(
+        icon: const Icon(Icons.calculate_outlined),
+        title: ('Calculate'),
+        activeColorPrimary: Theme.of(context).colorScheme.primary,
+        inactiveColorPrimary: Colors.grey,
+      ),
+      PersistentBottomNavBarItem(
+        icon: const Icon(Icons.history_outlined),
+        title: ('Shipment'),
+        activeColorPrimary: Theme.of(context).colorScheme.primary,
+        inactiveColorPrimary: Colors.grey,
+      ),
+      PersistentBottomNavBarItem(
+        icon: const Icon(Icons.person_outline),
+        title: ('Profile'),
+        activeColorPrimary: Theme.of(context).colorScheme.primary,
+        inactiveColorPrimary: Colors.grey,
+      ),
+    ];
   }
 }
