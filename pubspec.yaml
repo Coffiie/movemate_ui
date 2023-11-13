@@ -32,6 +32,7 @@ dependencies:
   flutter:
     sdk: flutter
   google_fonts: ^6.1.0
+  lottie: ^2.7.0
   persistent_bottom_nav_bar: ^5.0.2
   provider: ^6.1.1
 
@@ -53,6 +54,7 @@ flutter:
   assets:
     - assets/images/
     - assets/icons/
+    - assets/anims/
   #   - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

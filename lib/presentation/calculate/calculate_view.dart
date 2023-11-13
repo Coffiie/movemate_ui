@@ -3,10 +3,12 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:movemate_ui/application/calculate/calculate_chip_provider.dart';
 import 'package:movemate_ui/mock_data.dart';
+import 'package:movemate_ui/presentation/calculate/calculate_details_view.dart';
 import 'package:movemate_ui/presentation/calculate/widgets/destination_field.dart';
 import 'dart:math' as math;
 
 import 'package:movemate_ui/presentation/core/widgets/package_icon.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:provider/provider.dart';
 
 class CalculateView extends StatelessWidget {
@@ -103,19 +105,7 @@ class _Body extends StatelessWidget {
         const SizedBox(
           height: 16,
         ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-          child: ElevatedButton(
-            onPressed: () {},
-            child: Text(
-              'Calculate',
-              style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: Theme.of(context).colorScheme.onSecondary,
-                  ),
-            ),
-          ),
-        ),
+        const _CalculateButton(),
       ],
     );
   }
@@ -257,6 +247,33 @@ class _ChipSection extends StatelessWidget {
           ),
         );
       }),
+    );
+  }
+}
+
+class _CalculateButton extends StatelessWidget {
+  const _CalculateButton();
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      child: ElevatedButton(
+        onPressed: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => const CalculateDetailsView(),
+            ),
+          );
+        },
+        child: Text(
+          'Calculate',
+          style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).colorScheme.onSecondary,
+              ),
+        ),
+      ),
     );
   }
 }

@@ -112,7 +112,7 @@ class MyApp extends StatelessWidget {
         create: (context) => ShipmentTabProvider(),
         child: const ShipmentHistoryView(),
       ),
-      const CalculateView(),
+      const Placeholder(),
     ];
   }
 
