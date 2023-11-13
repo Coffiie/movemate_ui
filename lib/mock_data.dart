@@ -27,3 +27,21 @@ final freights = [
     description: 'International',
   ),
 ];
+
+final status = [
+  'loading',
+  'pending',
+  'in-progress',
+  'loading',
+  'pending',
+  'in-progress',
+  'loading',
+  'pending',
+  'in-progress',
+  'loading',
+  'pending',
+  'in-progress',
+  'loading',
+  'pending',
+  'in-progress',
+];

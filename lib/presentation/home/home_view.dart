@@ -18,7 +18,6 @@ class HomeView extends StatelessWidget {
     log('built');
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.primary,
         leadingWidth: kLeadingWidth,
         leading: const Padding(
           padding: EdgeInsets.only(left: 16.0),
