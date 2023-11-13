@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:movemate_ui/application/calculate/calculate_chip_provider.dart';
+import 'package:movemate_ui/application/home/home_anim_provider.dart';
 import 'package:movemate_ui/application/shipment_history/shipment_tab_provider.dart';
 import 'package:movemate_ui/presentation/calculate/calculate_view.dart';
 import 'package:movemate_ui/presentation/core/theme/app_colors.dart';

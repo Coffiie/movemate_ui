@@ -1,12 +1,13 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
+import 'package:movemate_ui/application/home/home_anim_provider.dart';
 import 'package:movemate_ui/mock_data.dart';
 import 'package:movemate_ui/presentation/core/asset.dart';
 import 'dart:math' as math;
 
 import 'package:movemate_ui/presentation/core/widgets/package_icon.dart';
 import 'package:movemate_ui/presentation/core/widgets/search_field.dart';
+import 'package:movemate_ui/presentation/home/search_view.dart';
+import 'package:provider/provider.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
@@ -15,7 +16,6 @@ class HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    log('built');
     return Scaffold(
       appBar: AppBar(
         leadingWidth: kLeadingWidth,
@@ -83,9 +83,28 @@ class HomeView extends StatelessWidget {
             ),
           ),
         ],
-        bottom: const PreferredSize(
-          preferredSize: Size.fromHeight(kToolbarHeight + 20),
-          child: SearchField(),
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(kToolbarHeight + 20),
+          child: Hero(
+            tag: 'search_bar',
+            child: Material(
+              color: Colors.transparent,
+              shadowColor: Colors.transparent,
+              child: SearchField(
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => ChangeNotifierProvider(
+                        create: (context) => HomeAnimProvider(),
+                        child: const SearchView(),
+                      ),
+                    ),
+                  );
+                  FocusManager.instance.primaryFocus?.unfocus();
+                },
+              ),
+            ),
+          ),
         ),
       ),
       body: const _HomeBody(),

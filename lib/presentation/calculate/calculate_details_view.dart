@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:countup/countup.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:movemate_ui/presentation/core/asset.dart';
@@ -66,11 +67,16 @@ class _CalculateDetailsViewState extends State<CalculateDetailsView> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
-                  '\$1460',
+                Countup(
+                  prefix: '\$',
+                  begin: 1300,
+                  end: 1460,
+                  duration: const Duration(seconds: 3),
+                  separator: ',',
                   style: Theme.of(context).textTheme.titleLarge!.copyWith(
                         color: AppColors.statusInProgressColor,
                       ),
+                  curve: Curves.easeOutExpo,
                 ),
                 Text(
                   ' USD',
