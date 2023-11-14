@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:countup/countup.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:lottie/lottie.dart';
 import 'package:movemate_ui/presentation/core/asset.dart';
 import 'package:movemate_ui/presentation/core/theme/app_colors.dart';
@@ -45,94 +46,106 @@ class _CalculateDetailsViewState extends State<CalculateDetailsView> {
         ),
         secondChild: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const _Logo(),
-            const SizedBox(
-              height: 32,
-            ),
-            const PackageIcon(
-              hasBackground: false,
-              scale: 4,
-            ),
-            const SizedBox(
-              height: 32,
-            ),
-            Text(
-              'Total Estimated Amount',
-              style: Theme.of(context).textTheme.titleLarge!.copyWith(),
-            ),
-            const SizedBox(
-              height: 8,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Countup(
-                  prefix: '\$',
-                  begin: 1300,
-                  end: 1460,
-                  duration: const Duration(seconds: 3),
-                  separator: ',',
-                  style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                        color: AppColors.statusInProgressColor,
-                      ),
-                  curve: Curves.easeOutExpo,
-                ),
-                Text(
-                  ' USD',
-                  style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                        color: AppColors.statusInProgressColor,
-                      ),
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 8,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 55.0),
-              child: Column(
-                children: [
-                  Text(
-                    'This amount is estimated this will vary if you change your location or weight',
-                    style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                          color: Theme.of(context)
-                              .colorScheme
-                              .onSecondaryContainer
-                              .withOpacity(0.5),
-                          fontWeight: FontWeight.bold,
-                        ),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
+          children: AnimationConfiguration.toStaggeredList(
+            duration: const Duration(milliseconds: 375),
+            childAnimationBuilder: (widget) => SlideAnimation(
+              horizontalOffset: 50.0,
+              child: FadeInAnimation(
+                child: widget,
               ),
             ),
-            const SizedBox(
-              height: 32,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Row(
+            children: [
+              const _Logo(),
+              const SizedBox(
+                height: 32,
+              ),
+              const PackageIcon(
+                hasBackground: false,
+                scale: 4,
+              ),
+              const SizedBox(
+                height: 32,
+              ),
+              Text(
+                'Total Estimated Amount',
+                style: Theme.of(context).textTheme.titleLarge!.copyWith(),
+              ),
+              const SizedBox(
+                height: 8,
+              ),
+              Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: Text(
-                        'Back to home',
-                        style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                              color: Theme.of(context).colorScheme.onPrimary,
-                              fontWeight: FontWeight.bold,
-                            ),
-                      ),
-                    ),
+                  Countup(
+                    prefix: '\$',
+                    begin: 1300,
+                    end: 1460,
+                    duration: const Duration(seconds: 3),
+                    separator: ',',
+                    style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                          color: AppColors.statusInProgressColor,
+                        ),
+                    curve: Curves.easeOutExpo,
+                  ),
+                  Text(
+                    ' USD',
+                    style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                          color: AppColors.statusInProgressColor,
+                        ),
                   ),
                 ],
               ),
-            ),
-          ],
+              const SizedBox(
+                height: 8,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 55.0),
+                child: Column(
+                  children: [
+                    Text(
+                      'This amount is estimated this will vary if you change your location or weight',
+                      style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onSecondaryContainer
+                                .withOpacity(0.5),
+                            fontWeight: FontWeight.bold,
+                          ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(
+                height: 32,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: Text(
+                          'Back to home',
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleSmall!
+                              .copyWith(
+                                color: Theme.of(context).colorScheme.onPrimary,
+                                fontWeight: FontWeight.bold,
+                              ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

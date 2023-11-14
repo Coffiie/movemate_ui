@@ -1,9 +1,10 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:movemate_ui/application/home/home_anim_provider.dart';
 import 'package:movemate_ui/mock_data.dart';
 import 'package:movemate_ui/presentation/core/asset.dart';
-import 'dart:math' as math;
-
 import 'package:movemate_ui/presentation/core/widgets/package_icon.dart';
 import 'package:movemate_ui/presentation/core/widgets/search_field.dart';
 import 'package:movemate_ui/presentation/home/search_view.dart';
@@ -29,47 +30,56 @@ class HomeView extends StatelessWidget {
         ),
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Transform.rotate(
-                  angle: 45 * math.pi / 180,
-                  child: Icon(
-                    Icons.navigation,
-                    size: 15,
-                    color: Theme.of(context).colorScheme.inversePrimary,
+          children: AnimationConfiguration.toStaggeredList(
+            duration: const Duration(milliseconds: 375),
+            childAnimationBuilder: (widget) => SlideAnimation(
+              horizontalOffset: 50.0,
+              child: FadeInAnimation(
+                child: widget,
+              ),
+            ),
+            children: [
+              Row(
+                children: [
+                  Transform.rotate(
+                    angle: 45 * math.pi / 180,
+                    child: Icon(
+                      Icons.navigation,
+                      size: 15,
+                      color: Theme.of(context).colorScheme.inversePrimary,
+                    ),
                   ),
-                ),
-                const SizedBox(
-                  width: 4,
-                ),
-                Text(
-                  'Your location',
-                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                        color: Theme.of(context).colorScheme.inversePrimary,
-                      ),
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                Text(
-                  'Wetheimer, Illinois',
-                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                        color: Theme.of(context).colorScheme.onPrimary,
-                      ),
-                ),
-                const SizedBox(
-                  width: 4,
-                ),
-                Icon(
-                  Icons.expand_more,
-                  size: 15,
-                  color: Theme.of(context).colorScheme.onPrimary,
-                ),
-              ],
-            ),
-          ],
+                  const SizedBox(
+                    width: 4,
+                  ),
+                  Text(
+                    'Your location',
+                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                          color: Theme.of(context).colorScheme.inversePrimary,
+                        ),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Text(
+                    'Wetheimer, Illinois',
+                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                          color: Theme.of(context).colorScheme.onPrimary,
+                        ),
+                  ),
+                  const SizedBox(
+                    width: 4,
+                  ),
+                  Icon(
+                    Icons.expand_more,
+                    size: 15,
+                    color: Theme.of(context).colorScheme.onPrimary,
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
         actions: [
           Padding(
@@ -119,39 +129,48 @@ class _HomeBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView(
       padding: EdgeInsets.zero,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(left: 16, top: 16),
-          child: Text(
-            'Tracking',
-            style: Theme.of(context)
-                .textTheme
-                .bodyLarge!
-                .copyWith(fontWeight: FontWeight.bold),
+      children: AnimationConfiguration.toStaggeredList(
+        duration: const Duration(milliseconds: 375),
+        childAnimationBuilder: (widget) => SlideAnimation(
+          horizontalOffset: 50.0,
+          child: FadeInAnimation(
+            child: widget,
           ),
         ),
-        const SizedBox(
-          height: 8,
-        ),
-        const _ShipmentDetails(),
-        Padding(
-          padding: const EdgeInsets.only(left: 16, top: 16),
-          child: Text(
-            'Available Vehicles',
-            style: Theme.of(context)
-                .textTheme
-                .bodyLarge!
-                .copyWith(fontWeight: FontWeight.bold),
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 16, top: 16),
+            child: Text(
+              'Tracking',
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyLarge!
+                  .copyWith(fontWeight: FontWeight.bold),
+            ),
           ),
-        ),
-        const SizedBox(
-          height: 4,
-        ),
-        const SizedBox(height: 200, child: _AvailableVehicles()),
-        const SizedBox(
-          height: 16,
-        ),
-      ],
+          const SizedBox(
+            height: 8,
+          ),
+          const _ShipmentDetails(),
+          Padding(
+            padding: const EdgeInsets.only(left: 16, top: 16),
+            child: Text(
+              'Available Vehicles',
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyLarge!
+                  .copyWith(fontWeight: FontWeight.bold),
+            ),
+          ),
+          const SizedBox(
+            height: 4,
+          ),
+          const SizedBox(height: 200, child: _AvailableVehicles()),
+          const SizedBox(
+            height: 16,
+          ),
+        ],
+      ),
     );
   }
 }
@@ -161,9 +180,15 @@ class _ShipmentDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final disabledColor =
+        Theme.of(context).colorScheme.onSecondaryContainer.withOpacity(
+              0.5,
+            );
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Card(
+        elevation: 0,
         child: Column(
           children: [
             Padding(
@@ -178,7 +203,15 @@ class _ShipmentDetails extends StatelessWidget {
                         children: [
                           Text(
                             'Shipment number',
-                            style: Theme.of(context).textTheme.bodySmall,
+                            style:
+                                Theme.of(context).textTheme.bodySmall!.copyWith(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onSecondaryContainer
+                                          .withOpacity(
+                                            0.5,
+                                          ),
+                                    ),
                           ),
                           const SizedBox(
                             height: 8,
@@ -217,8 +250,12 @@ class _ShipmentDetails extends StatelessWidget {
                                 children: [
                                   Text(
                                     'Sender',
-                                    style:
-                                        Theme.of(context).textTheme.bodySmall,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodySmall!
+                                        .copyWith(
+                                          color: disabledColor,
+                                        ),
                                   ),
                                   const Text(
                                     'Atlanta, 5243',
@@ -241,8 +278,10 @@ class _ShipmentDetails extends StatelessWidget {
                                 children: [
                                   Text(
                                     'Receiver',
-                                    style:
-                                        Theme.of(context).textTheme.bodySmall,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodySmall!
+                                        .copyWith(color: disabledColor),
                                   ),
                                   const Text(
                                     'Chicago, 6342',
@@ -258,7 +297,15 @@ class _ShipmentDetails extends StatelessWidget {
                         children: [
                           Text(
                             'Time',
-                            style: Theme.of(context).textTheme.bodySmall,
+                            style:
+                                Theme.of(context).textTheme.bodySmall!.copyWith(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onSecondaryContainer
+                                          .withOpacity(
+                                            0.5,
+                                          ),
+                                    ),
                           ),
                           const Row(
                             children: [
@@ -279,7 +326,15 @@ class _ShipmentDetails extends StatelessWidget {
                           ),
                           Text(
                             'Status',
-                            style: Theme.of(context).textTheme.bodySmall,
+                            style:
+                                Theme.of(context).textTheme.bodySmall!.copyWith(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onSecondaryContainer
+                                          .withOpacity(
+                                            0.5,
+                                          ),
+                                    ),
                           ),
                           const Text(
                             'Waiting to collect',
@@ -341,6 +396,7 @@ class _AvailableVehicles extends StatelessWidget {
           child: SizedBox(
             width: MediaQuery.sizeOf(context).width * 0.4,
             child: Card(
+              elevation: 0,
               margin: EdgeInsets.zero,
               child: Stack(
                 children: [
@@ -356,14 +412,21 @@ class _AvailableVehicles extends StatelessWidget {
                           children: [
                             Text(
                               item.name,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyLarge!
-                                  .copyWith(fontWeight: FontWeight.bold),
+                              style: Theme.of(context).textTheme.bodyLarge,
                             ),
                             Text(
                               item.description,
-                              style: Theme.of(context).textTheme.bodySmall!,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodySmall!
+                                  .copyWith(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onSecondaryContainer
+                                        .withOpacity(
+                                          0.5,
+                                        ),
+                                  ),
                             ),
                           ],
                         ),

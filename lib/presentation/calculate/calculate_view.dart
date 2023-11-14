@@ -1,14 +1,12 @@
-import 'dart:developer';
+import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:movemate_ui/application/calculate/calculate_chip_provider.dart';
 import 'package:movemate_ui/mock_data.dart';
 import 'package:movemate_ui/presentation/calculate/calculate_details_view.dart';
 import 'package:movemate_ui/presentation/calculate/widgets/destination_field.dart';
-import 'dart:math' as math;
-
 import 'package:movemate_ui/presentation/core/widgets/package_icon.dart';
-import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:provider/provider.dart';
 
 class CalculateView extends StatelessWidget {
@@ -40,73 +38,85 @@ class _Body extends StatelessWidget {
         Theme.of(context).colorScheme.onSecondaryContainer.withOpacity(0.55);
 
     return ListView(
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(top: 16, bottom: 8, left: 8, right: 8),
-          child: Text(
-            'Destination',
-            style: Theme.of(context)
-                .textTheme
-                .bodyLarge!
-                .copyWith(fontWeight: FontWeight.bold),
+      children: AnimationConfiguration.toStaggeredList(
+        duration: const Duration(milliseconds: 375),
+        childAnimationBuilder: (widget) => SlideAnimation(
+          horizontalOffset: 50.0,
+          child: FadeInAnimation(
+            child: widget,
           ),
         ),
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 8.0),
-          child: _DestinationCard(),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(top: 16, bottom: 8, left: 8, right: 8),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Packaging',
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyLarge!
-                    .copyWith(fontWeight: FontWeight.bold),
-              ),
-              Text(
-                'What are you sending?',
-                style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                      color: disabledColor,
-                    ),
-              ),
-            ],
+        children: [
+          Padding(
+            padding:
+                const EdgeInsets.only(top: 16, bottom: 8, left: 16, right: 16),
+            child: Text(
+              'Destination',
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyLarge!
+                  .copyWith(fontWeight: FontWeight.bold),
+            ),
           ),
-        ),
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 8.0),
-          child: _PackagingSection(),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(top: 16, bottom: 8, left: 8, right: 8),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Categories',
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyLarge!
-                    .copyWith(fontWeight: FontWeight.bold),
-              ),
-              Text(
-                'What are you sending?',
-                style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                      color: disabledColor,
-                    ),
-              ),
-            ],
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16.0),
+            child: _DestinationCard(),
           ),
-        ),
-        const _ChipSection(),
-        const SizedBox(
-          height: 16,
-        ),
-        const _CalculateButton(),
-      ],
+          Padding(
+            padding:
+                const EdgeInsets.only(top: 16, bottom: 8, left: 16, right: 16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Packaging',
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyLarge!
+                      .copyWith(fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  'What are you sending?',
+                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                        color: disabledColor,
+                      ),
+                ),
+              ],
+            ),
+          ),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16.0),
+            child: _PackagingSection(),
+          ),
+          Padding(
+            padding:
+                const EdgeInsets.only(top: 16, bottom: 8, left: 16, right: 16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Categories',
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyLarge!
+                      .copyWith(fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  'What are you sending?',
+                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                        color: disabledColor,
+                      ),
+                ),
+              ],
+            ),
+          ),
+          const _ChipSection(),
+          const SizedBox(
+            height: 16,
+          ),
+          const _CalculateButton(),
+        ],
+      ),
     );
   }
 }
@@ -257,7 +267,7 @@ class _CalculateButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: ElevatedButton(
         onPressed: () {
           Navigator.of(context).push(

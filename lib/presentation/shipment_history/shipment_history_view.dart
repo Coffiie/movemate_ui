@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:movemate_ui/application/shipment_history/shipment_tab_provider.dart';
 import 'package:movemate_ui/mock_data.dart';
 import 'package:movemate_ui/presentation/core/theme/app_colors.dart';
@@ -108,8 +109,17 @@ class _TabViewItem extends StatelessWidget {
             );
           }
           final statusItem = status[index - 1];
-          return _ShipmentHistoryCard(
-            status: statusItem,
+          return AnimationConfiguration.staggeredList(
+            position: index,
+            duration: const Duration(milliseconds: 375),
+            child: SlideAnimation(
+              verticalOffset: 50.0,
+              child: FadeInAnimation(
+                child: _ShipmentHistoryCard(
+                  status: statusItem,
+                ),
+              ),
+            ),
           );
         },
       ),
@@ -149,115 +159,122 @@ class _ShipmentHistoryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            Row(
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).scaffoldBackgroundColor,
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 10.0,
-                      vertical: 4,
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 4.0),
+      child: Card(
+        elevation: 0,
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).scaffoldBackgroundColor,
+                      borderRadius: BorderRadius.circular(30),
                     ),
-                    child: Row(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10.0,
+                        vertical: 4,
+                      ),
+                      child: Row(
+                        children: [
+                          Icon(
+                            _getIcon(status),
+                            color: _getColor(status),
+                            size: 20,
+                          ),
+                          const SizedBox(
+                            width: 8,
+                          ),
+                          Text(
+                            status,
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium!
+                                .copyWith(
+                                  color: _getColor(status),
+                                  fontWeight: FontWeight.bold,
+                                ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    flex: 3,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Icon(
-                          _getIcon(status),
-                          color: _getColor(status),
-                          size: 20,
-                        ),
-                        const SizedBox(
-                          width: 8,
+                        Text(
+                          'Arriving today!',
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyLarge!
+                              .copyWith(fontWeight: FontWeight.bold),
                         ),
                         Text(
-                          status,
+                          'Your delivery, #NEJ20089934122231 from Atlanta, is arriving today!',
                           style:
-                              Theme.of(context).textTheme.bodyMedium!.copyWith(
-                                    color: _getColor(status),
-                                    fontWeight: FontWeight.bold,
+                              Theme.of(context).textTheme.bodySmall!.copyWith(
+                                    fontWeight: FontWeight.w500,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onSecondaryContainer
+                                        .withOpacity(
+                                          0.5,
+                                        ),
                                   ),
                         ),
                       ],
                     ),
                   ),
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                Expanded(
-                  flex: 3,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Arriving today!',
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyLarge!
-                            .copyWith(fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        'Your delivery, #NEJ20089934122231 from Atlanta, is arriving today!',
-                        style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                              fontWeight: FontWeight.w600,
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .onSecondaryContainer
-                                  .withOpacity(
-                                    0.5,
-                                  ),
-                            ),
-                      ),
-                    ],
+                  const Expanded(
+                    child: PackageIcon(
+                      scale: 10,
+                      hasBackground: false,
+                    ),
                   ),
-                ),
-                const Expanded(
-                  child: PackageIcon(
-                    scale: 10,
-                    hasBackground: false,
+                ],
+              ),
+              Row(
+                children: [
+                  Text(
+                    '\$650 USD',
+                    style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
                   ),
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                Text(
-                  '\$650 USD',
-                  style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
-                ),
-                const SizedBox(
-                  width: 4,
-                ),
-                Text(
-                  '•',
-                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .onPrimaryContainer
-                            .withOpacity(0.5),
-                      ),
-                ),
-                const SizedBox(
-                  width: 4,
-                ),
-                Text(
-                  'Sep 20, 2023',
-                  style: Theme.of(context).textTheme.bodySmall,
-                ),
-              ],
-            ),
-          ],
+                  const SizedBox(
+                    width: 4,
+                  ),
+                  Text(
+                    '•',
+                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                          color: Theme.of(context)
+                              .colorScheme
+                              .onPrimaryContainer
+                              .withOpacity(0.5),
+                        ),
+                  ),
+                  const SizedBox(
+                    width: 4,
+                  ),
+                  Text(
+                    'Sep 20, 2023',
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
