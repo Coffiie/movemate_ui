@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:movemate_ui/application/shipment_history/shipment_tab_provider.dart';
 import 'package:movemate_ui/mock_data.dart';
+import 'package:movemate_ui/presentation/core/extensions/on_build_context.dart';
 import 'package:movemate_ui/presentation/core/theme/app_colors.dart';
 import 'package:movemate_ui/presentation/core/widgets/package_icon.dart';
 import 'package:movemate_ui/presentation/shipment_history/widgets/tab_item.dart';
@@ -21,17 +22,17 @@ class ShipmentHistoryView extends StatelessWidget {
           centerTitle: true,
           title: Text(
             'Shipment history',
-            style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                  color: Theme.of(context).colorScheme.onPrimary,
-                ),
+            style: context.textTheme.bodyLarge!.copyWith(
+              color: context.colorScheme.onPrimary,
+            ),
           ),
           bottom: TabBar(
             indicatorWeight: 3,
             isScrollable: true,
             onTap: (index) => tabProvider.setIndex(index),
-            indicatorColor: Theme.of(context).colorScheme.secondary,
-            unselectedLabelColor: Theme.of(context).colorScheme.inversePrimary,
-            labelColor: Theme.of(context).colorScheme.onPrimary,
+            indicatorColor: context.colorScheme.secondary,
+            unselectedLabelColor: context.colorScheme.inversePrimary,
+            labelColor: context.colorScheme.onPrimary,
             padding: const EdgeInsets.symmetric(horizontal: 16),
             indicatorSize: TabBarIndicatorSize.tab,
             tabs: const [
@@ -75,6 +76,7 @@ class _Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const TabBarView(
+      physics: NeverScrollableScrollPhysics(),
       children: [
         _TabViewItem(),
         _TabViewItem(),
@@ -97,16 +99,7 @@ class _TabViewItem extends StatelessWidget {
         itemCount: status.length + 1,
         itemBuilder: (context, index) {
           if (index == 0) {
-            return Padding(
-              padding: const EdgeInsets.only(top: 16, bottom: 8),
-              child: Text(
-                'Shipments',
-                style: Theme.of(context)
-                    .textTheme
-                    .titleLarge!
-                    .copyWith(fontWeight: FontWeight.bold),
-              ),
-            );
+            return const _Shipment();
           }
           final statusItem = status[index - 1];
           return AnimationConfiguration.staggeredList(
@@ -122,6 +115,24 @@ class _TabViewItem extends StatelessWidget {
             ),
           );
         },
+      ),
+    );
+  }
+}
+
+class _Shipment extends StatelessWidget {
+  const _Shipment({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 16, bottom: 8),
+      child: Text(
+        'Shipments',
+        style: Theme.of(context)
+            .textTheme
+            .titleLarge!
+            .copyWith(fontWeight: FontWeight.bold),
       ),
     );
   }
@@ -221,16 +232,15 @@ class _ShipmentHistoryCard extends StatelessWidget {
                         ),
                         Text(
                           'Your delivery, #NEJ20089934122231 from Atlanta, is arriving today!',
-                          style:
-                              Theme.of(context).textTheme.bodySmall!.copyWith(
-                                    fontWeight: FontWeight.w500,
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onSecondaryContainer
-                                        .withOpacity(
-                                          0.5,
-                                        ),
-                                  ),
+                          style: context.textTheme.bodySmall!.copyWith(
+                            fontWeight: FontWeight.w500,
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onSecondaryContainer
+                                .withOpacity(
+                                  0.5,
+                                ),
+                          ),
                         ),
                       ],
                     ),
@@ -247,29 +257,29 @@ class _ShipmentHistoryCard extends StatelessWidget {
                 children: [
                   Text(
                     '\$650 USD',
-                    style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                          fontWeight: FontWeight.bold,
-                          color: Theme.of(context).colorScheme.primary,
-                        ),
+                    style: context.textTheme.bodySmall!.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: context.colorScheme.primary,
+                    ),
                   ),
                   const SizedBox(
                     width: 4,
                   ),
                   Text(
                     '•',
-                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                          color: Theme.of(context)
-                              .colorScheme
-                              .onPrimaryContainer
-                              .withOpacity(0.5),
-                        ),
+                    style: context.textTheme.bodyLarge!.copyWith(
+                      color: Theme.of(context)
+                          .colorScheme
+                          .onPrimaryContainer
+                          .withOpacity(0.5),
+                    ),
                   ),
                   const SizedBox(
                     width: 4,
                   ),
                   Text(
                     'Sep 20, 2023',
-                    style: Theme.of(context).textTheme.bodySmall,
+                    style: context.textTheme.bodySmall,
                   ),
                 ],
               ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movemate_ui/presentation/core/extensions/on_build_context.dart';
 
 class SearchField extends StatelessWidget {
   const SearchField({super.key, this.onTap, this.onChanged});
@@ -17,11 +18,11 @@ class SearchField extends StatelessWidget {
           suffixIcon: Padding(
             padding: const EdgeInsets.all(4.0),
             child: CircleAvatar(
-              backgroundColor: Theme.of(context).colorScheme.secondary,
+              backgroundColor: context.colorScheme.secondary,
               child: IconButton(
                 icon: Icon(
                   Icons.qr_code_scanner,
-                  color: Theme.of(context).colorScheme.onSecondary,
+                  color: context.colorScheme.onSecondary,
                 ),
                 onPressed: () {},
               ),

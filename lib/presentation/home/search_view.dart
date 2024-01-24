@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:movemate_ui/application/home/home_anim_provider.dart';
+import 'package:movemate_ui/presentation/core/extensions/on_build_context.dart';
 import 'package:movemate_ui/presentation/core/widgets/package_icon.dart';
 import 'package:movemate_ui/presentation/core/widgets/search_field.dart';
 import 'package:provider/provider.dart';
@@ -30,7 +31,7 @@ class SearchView extends StatelessWidget {
                   padding: const EdgeInsets.only(left: 8.0),
                   child: Icon(
                     Icons.chevron_left,
-                    color: Theme.of(context).colorScheme.onPrimary,
+                    color: context.colorScheme.onPrimary,
                   ),
                 ),
               ),
@@ -107,7 +108,7 @@ class _CardItem extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         PackageIcon(
-          backgroundColor: Theme.of(context).colorScheme.primary,
+          backgroundColor: context.colorScheme.primary,
           scale: 30,
         ),
         const SizedBox(
@@ -118,36 +119,30 @@ class _CardItem extends StatelessWidget {
           children: [
             Text(
               'Summer linen jacket',
-              style: Theme.of(context).textTheme.bodyLarge,
+              style: context.textTheme.bodyLarge,
             ),
             Row(
               children: [
                 Text(
                   '#NEJ20089934122231',
-                  style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .onSecondaryContainer
-                            .withOpacity(0.55),
-                      ),
+                  style: context.textTheme.bodySmall!.copyWith(
+                    color: context.colorScheme.onSecondaryContainer
+                        .withOpacity(0.55),
+                  ),
                 ),
                 Text(
                   ' • ',
-                  style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .onSecondaryContainer
-                            .withOpacity(0.55),
-                      ),
+                  style: context.textTheme.bodySmall!.copyWith(
+                    color: context.colorScheme.onSecondaryContainer
+                        .withOpacity(0.55),
+                  ),
                 ),
                 Text(
                   'Barcelona -> Spain',
-                  style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .onSecondaryContainer
-                            .withOpacity(0.55),
-                      ),
+                  style: context.textTheme.bodySmall!.copyWith(
+                    color: context.colorScheme.onSecondaryContainer
+                        .withOpacity(0.55),
+                  ),
                 ),
               ],
             ),

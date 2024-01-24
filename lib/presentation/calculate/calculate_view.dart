@@ -6,6 +6,7 @@ import 'package:movemate_ui/application/calculate/calculate_chip_provider.dart';
 import 'package:movemate_ui/mock_data.dart';
 import 'package:movemate_ui/presentation/calculate/calculate_details_view.dart';
 import 'package:movemate_ui/presentation/calculate/widgets/destination_field.dart';
+import 'package:movemate_ui/presentation/core/extensions/on_build_context.dart';
 import 'package:movemate_ui/presentation/core/widgets/package_icon.dart';
 import 'package:provider/provider.dart';
 
@@ -19,9 +20,9 @@ class CalculateView extends StatelessWidget {
         centerTitle: true,
         title: Text(
           'Calculate',
-          style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                color: Theme.of(context).colorScheme.onPrimary,
-              ),
+          style: context.textTheme.bodyLarge!.copyWith(
+            color: context.colorScheme.onPrimary,
+          ),
         ),
       ),
       body: const _Body(),
@@ -34,9 +35,6 @@ class _Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final disabledColor =
-        Theme.of(context).colorScheme.onSecondaryContainer.withOpacity(0.55);
-
     return ListView(
       children: AnimationConfiguration.toStaggeredList(
         duration: const Duration(milliseconds: 375),
@@ -47,75 +45,44 @@ class _Body extends StatelessWidget {
           ),
         ),
         children: [
-          Padding(
-            padding:
-                const EdgeInsets.only(top: 16, bottom: 8, left: 16, right: 16),
-            child: Text(
-              'Destination',
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyLarge!
-                  .copyWith(fontWeight: FontWeight.bold),
-            ),
-          ),
+          const _DestinationText(),
           const Padding(
             padding: EdgeInsets.symmetric(horizontal: 16.0),
             child: _DestinationCard(),
           ),
-          Padding(
-            padding:
-                const EdgeInsets.only(top: 16, bottom: 8, left: 16, right: 16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Packaging',
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyLarge!
-                      .copyWith(fontWeight: FontWeight.bold),
-                ),
-                Text(
-                  'What are you sending?',
-                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                        color: disabledColor,
-                      ),
-                ),
-              ],
-            ),
-          ),
+          const _PackagingHeader(),
           const Padding(
             padding: EdgeInsets.symmetric(horizontal: 16.0),
             child: _PackagingSection(),
           ),
-          Padding(
-            padding:
-                const EdgeInsets.only(top: 16, bottom: 8, left: 16, right: 16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Categories',
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyLarge!
-                      .copyWith(fontWeight: FontWeight.bold),
-                ),
-                Text(
-                  'What are you sending?',
-                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                        color: disabledColor,
-                      ),
-                ),
-              ],
-            ),
+          const Padding(
+            padding: EdgeInsets.only(top: 16, bottom: 8, left: 16, right: 16),
+            child: _CategoriesHeader(),
           ),
-          const _ChipSection(),
+          const _CategoriesSection(),
           const SizedBox(
             height: 16,
           ),
           const _CalculateButton(),
         ],
+      ),
+    );
+  }
+}
+
+class _DestinationText extends StatelessWidget {
+  const _DestinationText({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 16, bottom: 8, left: 16, right: 16),
+      child: Text(
+        'Destination',
+        style: Theme.of(context)
+            .textTheme
+            .bodyLarge!
+            .copyWith(fontWeight: FontWeight.bold),
       ),
     );
   }
@@ -127,7 +94,7 @@ class _DestinationCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final disabledColor =
-        Theme.of(context).colorScheme.onSecondaryContainer.withOpacity(0.55);
+        context.colorScheme.onSecondaryContainer.withOpacity(0.55);
 
     return Card(
       child: Padding(
@@ -169,6 +136,38 @@ class _DestinationCard extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _PackagingHeader extends StatelessWidget {
+  const _PackagingHeader({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final disabledColor =
+        context.colorScheme.onSecondaryContainer.withOpacity(0.55);
+
+    return Padding(
+      padding: const EdgeInsets.only(top: 16, bottom: 8, left: 16, right: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Packaging',
+            style: Theme.of(context)
+                .textTheme
+                .bodyLarge!
+                .copyWith(fontWeight: FontWeight.bold),
+          ),
+          Text(
+            'What are you sending?',
+            style: context.textTheme.bodyLarge!.copyWith(
+              color: disabledColor,
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -218,8 +217,37 @@ class _PackagingSection extends StatelessWidget {
   }
 }
 
-class _ChipSection extends StatelessWidget {
-  const _ChipSection();
+class _CategoriesHeader extends StatelessWidget {
+  const _CategoriesHeader({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final disabledColor =
+        context.colorScheme.onSecondaryContainer.withOpacity(0.55);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Categories',
+          style: Theme.of(context)
+              .textTheme
+              .bodyLarge!
+              .copyWith(fontWeight: FontWeight.bold),
+        ),
+        Text(
+          'What are you sending?',
+          style: context.textTheme.bodyLarge!.copyWith(
+            color: disabledColor,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _CategoriesSection extends StatelessWidget {
+  const _CategoriesSection();
 
   @override
   Widget build(BuildContext context) {
@@ -236,10 +264,9 @@ class _ChipSection extends StatelessWidget {
             labelPadding: const EdgeInsets.symmetric(
               horizontal: 8,
             ),
-            checkmarkColor:
-                selected ? Theme.of(context).colorScheme.onTertiary : null,
+            checkmarkColor: selected ? context.colorScheme.onTertiary : null,
             selected: selected,
-            selectedColor: Theme.of(context).colorScheme.tertiary,
+            selectedColor: context.colorScheme.tertiary,
             onSelected: (value) {
               if (value) {
                 chipProvider.setIndex(index);
@@ -251,7 +278,7 @@ class _ChipSection extends StatelessWidget {
                   ? Theme.of(context)
                       .textTheme
                       .titleSmall!
-                      .copyWith(color: Theme.of(context).colorScheme.onTertiary)
+                      .copyWith(color: context.colorScheme.onTertiary)
                   : null,
             ),
           ),
@@ -278,10 +305,10 @@ class _CalculateButton extends StatelessWidget {
         },
         child: Text(
           'Calculate',
-          style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                fontWeight: FontWeight.bold,
-                color: Theme.of(context).colorScheme.onSecondary,
-              ),
+          style: context.textTheme.titleSmall!.copyWith(
+            fontWeight: FontWeight.bold,
+            color: context.colorScheme.onSecondary,
+          ),
         ),
       ),
     );

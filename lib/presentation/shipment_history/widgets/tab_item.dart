@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movemate_ui/application/shipment_history/shipment_tab_provider.dart';
+import 'package:movemate_ui/presentation/core/extensions/on_build_context.dart';
 import 'package:provider/provider.dart';
 
 class TabItem extends StatelessWidget {
@@ -27,20 +28,17 @@ class TabItem extends StatelessWidget {
           Container(
             decoration: BoxDecoration(
               color: tabProvider.index == index
-                  ? Theme.of(context).colorScheme.secondary
-                  : Theme.of(context).colorScheme.onPrimary.withOpacity(0.15),
+                  ? context.colorScheme.secondary
+                  : context.colorScheme.onPrimary.withOpacity(0.15),
               borderRadius: BorderRadius.circular(30),
             ),
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: Text(
                 amount,
-                style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                      color: Theme.of(context)
-                          .colorScheme
-                          .onPrimary
-                          .withOpacity(0.5),
-                    ),
+                style: context.textTheme.bodySmall!.copyWith(
+                  color: context.colorScheme.onPrimary.withOpacity(0.5),
+                ),
               ),
             ),
           ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movemate_ui/presentation/core/extensions/on_build_context.dart';
 
 class DestinationField extends StatelessWidget {
   const DestinationField({
@@ -56,12 +57,12 @@ class DestinationField extends StatelessWidget {
           ),
         ),
         hintText: hintText,
-        hintStyle: Theme.of(context).textTheme.bodyLarge!.copyWith(
-              color: Theme.of(context)
-                  .colorScheme
-                  .onSecondaryContainer
-                  .withOpacity(0.55),
-            ),
+        hintStyle: context.textTheme.bodyLarge!.copyWith(
+          color: Theme.of(context)
+              .colorScheme
+              .onSecondaryContainer
+              .withOpacity(0.55),
+        ),
       ),
     );
   }

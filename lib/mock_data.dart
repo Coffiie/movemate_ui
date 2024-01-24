@@ -53,5 +53,5 @@ final chips = [
   'Food',
   'Electronic',
   'Product',
-  'Others'
+  'Others',
 ];

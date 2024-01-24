@@ -5,6 +5,7 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:movemate_ui/application/home/home_anim_provider.dart';
 import 'package:movemate_ui/mock_data.dart';
 import 'package:movemate_ui/presentation/core/asset.dart';
+import 'package:movemate_ui/presentation/core/extensions/on_build_context.dart';
 import 'package:movemate_ui/presentation/core/widgets/package_icon.dart';
 import 'package:movemate_ui/presentation/core/widgets/search_field.dart';
 import 'package:movemate_ui/presentation/home/search_view.dart';
@@ -46,7 +47,7 @@ class HomeView extends StatelessWidget {
                     child: Icon(
                       Icons.navigation,
                       size: 15,
-                      color: Theme.of(context).colorScheme.inversePrimary,
+                      color: context.colorScheme.inversePrimary,
                     ),
                   ),
                   const SizedBox(
@@ -54,9 +55,9 @@ class HomeView extends StatelessWidget {
                   ),
                   Text(
                     'Your location',
-                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                          color: Theme.of(context).colorScheme.inversePrimary,
-                        ),
+                    style: context.textTheme.bodyMedium!.copyWith(
+                      color: context.colorScheme.inversePrimary,
+                    ),
                   ),
                 ],
               ),
@@ -64,9 +65,9 @@ class HomeView extends StatelessWidget {
                 children: [
                   Text(
                     'Wetheimer, Illinois',
-                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                          color: Theme.of(context).colorScheme.onPrimary,
-                        ),
+                    style: context.textTheme.bodyMedium!.copyWith(
+                      color: context.colorScheme.onPrimary,
+                    ),
                   ),
                   const SizedBox(
                     width: 4,
@@ -74,7 +75,7 @@ class HomeView extends StatelessWidget {
                   Icon(
                     Icons.expand_more,
                     size: 15,
-                    color: Theme.of(context).colorScheme.onPrimary,
+                    color: context.colorScheme.onPrimary,
                   ),
                 ],
               ),
@@ -85,7 +86,7 @@ class HomeView extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(right: 16.0),
             child: CircleAvatar(
-              backgroundColor: Theme.of(context).colorScheme.onPrimary,
+              backgroundColor: context.colorScheme.onPrimary,
               child: IconButton(
                 onPressed: () {},
                 icon: const Icon(Icons.notifications_outlined),
@@ -93,31 +94,40 @@ class HomeView extends StatelessWidget {
             ),
           ),
         ],
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(kToolbarHeight + 20),
-          child: Hero(
-            tag: 'search_bar',
-            child: Material(
-              color: Colors.transparent,
-              shadowColor: Colors.transparent,
-              child: SearchField(
-                onTap: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => ChangeNotifierProvider(
-                        create: (context) => HomeAnimProvider(),
-                        child: const SearchView(),
-                      ),
-                    ),
-                  );
-                  FocusManager.instance.primaryFocus?.unfocus();
-                },
-              ),
-            ),
-          ),
+        bottom: const PreferredSize(
+          preferredSize: Size.fromHeight(kToolbarHeight + 20),
+          child: _SearchBar(),
         ),
       ),
       body: const _HomeBody(),
+    );
+  }
+}
+
+class _SearchBar extends StatelessWidget {
+  const _SearchBar({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Hero(
+      tag: 'search_bar',
+      child: Material(
+        color: Colors.transparent,
+        shadowColor: Colors.transparent,
+        child: SearchField(
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => ChangeNotifierProvider(
+                  create: (context) => HomeAnimProvider(),
+                  child: const SearchView(),
+                ),
+              ),
+            );
+            FocusManager.instance.primaryFocus?.unfocus();
+          },
+        ),
+      ),
     );
   }
 }
@@ -138,30 +148,12 @@ class _HomeBody extends StatelessWidget {
           ),
         ),
         children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 16, top: 16),
-            child: Text(
-              'Tracking',
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyLarge!
-                  .copyWith(fontWeight: FontWeight.bold),
-            ),
-          ),
+          const _TrackingText(),
           const SizedBox(
             height: 8,
           ),
           const _ShipmentDetails(),
-          Padding(
-            padding: const EdgeInsets.only(left: 16, top: 16),
-            child: Text(
-              'Available Vehicles',
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyLarge!
-                  .copyWith(fontWeight: FontWeight.bold),
-            ),
-          ),
+          const _AvailableVehiclesText(),
           const SizedBox(
             height: 4,
           ),
@@ -175,201 +167,65 @@ class _HomeBody extends StatelessWidget {
   }
 }
 
+class _AvailableVehiclesText extends StatelessWidget {
+  const _AvailableVehiclesText({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 16, top: 16),
+      child: Text(
+        'Available Vehicles',
+        style: Theme.of(context)
+            .textTheme
+            .bodyLarge!
+            .copyWith(fontWeight: FontWeight.bold),
+      ),
+    );
+  }
+}
+
+class _TrackingText extends StatelessWidget {
+  const _TrackingText({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 16, top: 16),
+      child: Text(
+        'Tracking',
+        style: Theme.of(context)
+            .textTheme
+            .bodyLarge!
+            .copyWith(fontWeight: FontWeight.bold),
+      ),
+    );
+  }
+}
+
 class _ShipmentDetails extends StatelessWidget {
   const _ShipmentDetails();
 
   @override
   Widget build(BuildContext context) {
-    final disabledColor =
-        Theme.of(context).colorScheme.onSecondaryContainer.withOpacity(
-              0.5,
-            );
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+    return const Padding(
+      padding: EdgeInsets.symmetric(horizontal: 16.0),
       child: Card(
         elevation: 0,
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: EdgeInsets.all(16.0),
               child: Column(
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Shipment number',
-                            style:
-                                Theme.of(context).textTheme.bodySmall!.copyWith(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onSecondaryContainer
-                                          .withOpacity(
-                                            0.5,
-                                          ),
-                                    ),
-                          ),
-                          const SizedBox(
-                            height: 8,
-                          ),
-                          Text(
-                            'NEJ20089934122231',
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyMedium!
-                                .copyWith(fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                      Transform.scale(
-                        scaleX: -1,
-                        child: Image.asset(
-                          Asset.forklift,
-                          scale: 12,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const Divider(),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              PackageIcon(backgroundColor: Colors.red.shade100),
-                              const SizedBox(width: 8),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Sender',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodySmall!
-                                        .copyWith(
-                                          color: disabledColor,
-                                        ),
-                                  ),
-                                  const Text(
-                                    'Atlanta, 5243',
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 30,
-                          ),
-                          Row(
-                            children: [
-                              PackageIcon(
-                                backgroundColor: Colors.lightGreen.shade100,
-                              ),
-                              const SizedBox(width: 8),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Receiver',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodySmall!
-                                        .copyWith(color: disabledColor),
-                                  ),
-                                  const Text(
-                                    'Chicago, 6342',
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Time',
-                            style:
-                                Theme.of(context).textTheme.bodySmall!.copyWith(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onSecondaryContainer
-                                          .withOpacity(
-                                            0.5,
-                                          ),
-                                    ),
-                          ),
-                          const Row(
-                            children: [
-                              CircleAvatar(
-                                radius: 3,
-                                backgroundColor: Colors.green,
-                              ),
-                              SizedBox(
-                                width: 4,
-                              ),
-                              Text(
-                                '2 - 3 days',
-                              ),
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 30,
-                          ),
-                          Text(
-                            'Status',
-                            style:
-                                Theme.of(context).textTheme.bodySmall!.copyWith(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onSecondaryContainer
-                                          .withOpacity(
-                                            0.5,
-                                          ),
-                                    ),
-                          ),
-                          const Text(
-                            'Waiting to collect',
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
+                  _ShipmentNumber(),
+                  Divider(),
+                  _Details(),
                 ],
               ),
             ),
-            const Divider(),
-            TextButton(
-              onPressed: () {},
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.add,
-                    size: 20,
-                    color: Theme.of(context).colorScheme.secondary,
-                  ),
-                  const SizedBox(
-                    width: 4,
-                  ),
-                  Text(
-                    'Add Stop',
-                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                          fontWeight: FontWeight.bold,
-                          color: Theme.of(context).colorScheme.secondary,
-                        ),
-                  ),
-                ],
-              ),
-            ),
+            Divider(),
+            _AddStopButton(),
           ],
         ),
       ),
@@ -412,7 +268,7 @@ class _AvailableVehicles extends StatelessWidget {
                           children: [
                             Text(
                               item.name,
-                              style: Theme.of(context).textTheme.bodyLarge,
+                              style: context.textTheme.bodyLarge,
                             ),
                             Text(
                               item.description,
@@ -452,6 +308,198 @@ class _AvailableVehicles extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+}
+
+class _ShipmentNumber extends StatelessWidget {
+  const _ShipmentNumber({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Shipment number',
+              style: context.textTheme.bodySmall!.copyWith(
+                color: Theme.of(context)
+                    .colorScheme
+                    .onSecondaryContainer
+                    .withOpacity(
+                      0.5,
+                    ),
+              ),
+            ),
+            const SizedBox(
+              height: 8,
+            ),
+            Text(
+              'NEJ20089934122231',
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyMedium!
+                  .copyWith(fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
+        Transform.scale(
+          scaleX: -1,
+          child: Image.asset(
+            Asset.forklift,
+            scale: 12,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _Details extends StatelessWidget {
+  const _Details({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final disabledColor = context.colorScheme.onSecondaryContainer.withOpacity(
+      0.5,
+    );
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                PackageIcon(backgroundColor: Colors.red.shade100),
+                const SizedBox(width: 8),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Sender',
+                      style: context.textTheme.bodySmall!.copyWith(
+                        color: disabledColor,
+                      ),
+                    ),
+                    const Text(
+                      'Atlanta, 5243',
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 30,
+            ),
+            Row(
+              children: [
+                PackageIcon(
+                  backgroundColor: Colors.lightGreen.shade100,
+                ),
+                const SizedBox(width: 8),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Receiver',
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodySmall!
+                          .copyWith(color: disabledColor),
+                    ),
+                    const Text(
+                      'Chicago, 6342',
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ],
+        ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Time',
+              style: context.textTheme.bodySmall!.copyWith(
+                color: Theme.of(context)
+                    .colorScheme
+                    .onSecondaryContainer
+                    .withOpacity(
+                      0.5,
+                    ),
+              ),
+            ),
+            const Row(
+              children: [
+                CircleAvatar(
+                  radius: 3,
+                  backgroundColor: Colors.green,
+                ),
+                SizedBox(
+                  width: 4,
+                ),
+                Text(
+                  '2 - 3 days',
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 30,
+            ),
+            Text(
+              'Status',
+              style: context.textTheme.bodySmall!.copyWith(
+                color: Theme.of(context)
+                    .colorScheme
+                    .onSecondaryContainer
+                    .withOpacity(
+                      0.5,
+                    ),
+              ),
+            ),
+            const Text(
+              'Waiting to collect',
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+class _AddStopButton extends StatelessWidget {
+  const _AddStopButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+      onPressed: () {},
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            Icons.add,
+            size: 20,
+            color: context.colorScheme.secondary,
+          ),
+          const SizedBox(
+            width: 4,
+          ),
+          Text(
+            'Add Stop',
+            style: context.textTheme.bodyMedium!.copyWith(
+              fontWeight: FontWeight.bold,
+              color: context.colorScheme.secondary,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
